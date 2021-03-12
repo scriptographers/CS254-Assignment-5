@@ -16,10 +16,21 @@ end entity;
 
 architecture struct of EightbitKogStonAddSub is
    
-   -- components
+   signal g, p: std_logic_vector (7 downto 0);
+	
+	component GenAndProp is
+		port(
+			a, b : in std_logic;
+			g, p: out std_logic
+		);
+	end component;
 
 begin
 
-	-- port maps
+	-- Parallel Preprocessing using for...generate statement (Reference: https://www.ics.uci.edu/~jmoorkan/vhdlref/generate.html)
+	preprocess: for I in 0 to 7 generate
+      gen_and_prop : GenAndProp 
+			port map (a => a(I), b => b(I), g => g(i), p => p(i));
+   end generate preprocess;
 
 end architecture;
