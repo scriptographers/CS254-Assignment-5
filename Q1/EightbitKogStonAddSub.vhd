@@ -16,7 +16,7 @@ end entity;
 
 architecture struct of EightbitKogStonAddSub is
    
-   signal g, p: std_logic_vector (7 downto 0);
+   signal g, p, c: std_logic_vector (7 downto 0);
 	
 	component GenAndProp is
 		port(
@@ -32,5 +32,24 @@ begin
       gen_and_prop : GenAndProp 
 			port map (a => a(I), b => b(I), g => g(i), p => p(i));
    end generate preprocess;
+	
+	-- GP[0:0]
+--	c(0) <= cin
+--	G00 <= g(0)
+--	P00 <= p(0)
+--	c(1) <= G00 + P00.c(0)
+--	
+--	-- GP[1:0]
+--	G10, P10 = gpcell(G11, P11, G00, P00)
+--	c(2) = G10 + P10.c(0)
+--	
+--	-- GP[2:0]
+	
+	
+	
+	
+	
+	
+	
 
 end architecture;
