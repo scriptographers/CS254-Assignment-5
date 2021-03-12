@@ -16,7 +16,7 @@ end entity;
 
 architecture struct of EightbitKogStonAddSub is
    
-   signal g, p, c: std_logic_vector (7 downto 0);
+   signal g, p, c, Gi0, Pi0: std_logic_vector (7 downto 0);
 	
 	signal G21, P21: std_logic;
 	signal G32, P32: std_logic;
@@ -28,15 +28,7 @@ architecture struct of EightbitKogStonAddSub is
 	signal G41, P41: std_logic;
 	signal G52, P52: std_logic;
 	signal G63, P63: std_logic;
-	signal G74, P74: std_logic;
-	
-	signal G10, P10: std_logic;
-	signal G20, P20: std_logic;
-	signal G30, P30: std_logic;
-	signal G40, P40: std_logic;
-	signal G50, P50: std_logic;
-	signal G60, P60: std_logic;
-	signal G70, P70: std_logic;
+	signal G74, P74: std_logic;	
 
 	component GenAndProp is
 		port(
@@ -63,13 +55,15 @@ begin
 	
 	
 	-- We already have GP00 G00 == g(0) and P00 == p(0)
+	Gi0(0) <= g(0);
+	Pi0(0) <= p(0);
 	
 	-- GP10
 	cell_1: GPCell 
 		port map(
 			Gij => g(1), Pij => p(1), 
 			Gj_1k => g(0) , Pj_1k => p(0),
-			Gik => G10, Pik => P10
+			Gik => Gi0(1), Pik => Pi0(1)
 		);
 		
 	
@@ -86,7 +80,7 @@ begin
 		port map(
 			Gij => G21, Pij => P21, 
 			Gj_1k => g(0) , Pj_1k => p(0),
-			Gik => G20, Pik => P20
+			Gik => Gi0(2), Pik => Pi0(2)
 		);
 	
 	
@@ -102,8 +96,8 @@ begin
 	cell_5: GPCell 
 		port map(
 			Gij => G32, Pij => P32, 
-			Gj_1k => G10 , Pj_1k => P10,
-			Gik => G30, Pik => P30
+			Gj_1k => Gi0(1) , Pj_1k => Pi0(1),
+			Gik => Gi0(3), Pik => Pi0(3)
 		);
 		
 		
@@ -128,7 +122,7 @@ begin
 		port map(
 			Gij => G41, Pij => P41, 
 			Gj_1k => g(0) , Pj_1k => p(0),
-			Gik => G40, Pik => P40
+			Gik => Gi0(4), Pik => Pi0(4)
 		);
 		
 		
@@ -152,8 +146,8 @@ begin
 	cell_11: GPCell 
 		port map(
 			Gij => G52, Pij => P52, 
-			Gj_1k => G10 , Pj_1k => P10,
-			Gik => G50, Pik => P50
+			Gj_1k => Gi0(1) , Pj_1k => Pi0(1),
+			Gik => Gi0(5), Pik => Pi0(5)
 		);
 		
 		
@@ -177,8 +171,8 @@ begin
 	cell_14: GPCell 
 		port map(
 			Gij => G63, Pij => P63, 
-			Gj_1k => G20 , Pj_1k => P20,
-			Gik => G60, Pik => P60
+			Gj_1k => Gi0(2) , Pj_1k => Pi0(2),
+			Gik => Gi0(6), Pik => Pi0(6)
 		);
 		
 		
@@ -202,15 +196,19 @@ begin
 	cell_17: GPCell 
 		port map(
 			Gij => G74, Pij => P74, 
-			Gj_1k => G30 , Pj_1k => P30,
-			Gik => G70, Pik => P70
+			Gj_1k => Gi0(3) , Pj_1k => Pi0(3),
+			Gik => Gi0(7), Pik => Pi0(7)
 		);
 		
---	
---	-- Parallel Carry computation using for...generate statement
---	preprocess: for I in 0 to 7 generate
---      gen_and_prop : GenAndProp 
---			port map (a => a(I), b => b(I), g => g(i), p => p(i));
---   end generate preprocess;
+		
+	-- Post processing
+	-- Assuming c_0 = 0, thus c(i) = G[i:0]
+	cout <= Gi0(7);
+			
+	-- Parallel Sum computation using for...generate statement
+	postprocess: for I in 0 to 7 generate
+      xor_i : XorGate 
+			port map (a => p(I), b => Gi0(I), z => sum(I));
+   end generate postprocess;
 
 end architecture;
