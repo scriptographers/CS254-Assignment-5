@@ -17,7 +17,6 @@ end entity;
 architecture struct of EightbitKogStonAddSub is
 
 	signal g, p, Gi0, Pi0 : std_logic_vector (7 downto 0);
-	signal c : std_logic_vector (8 downto 0);
 
 	signal G21, P21 : std_logic;
 	signal G32, P32 : std_logic;
@@ -38,18 +37,19 @@ architecture struct of EightbitKogStonAddSub is
 			Gik, Pik     : out std_logic
 		);
 	end component;
-
-	component XorGate is
-		port (
-			a, b : in std_logic;
-			z    : out std_logic
-		);
-	end component;
 	
 	component PreProcess is
 		port (
 			a, b : in std_logic_vector (7 downto 0);
 			g, p : out std_logic_vector (7 downto 0)
+		);
+	end component;
+	
+	component PostProcess is
+		port (
+			Gi0, p : in std_logic_vector (7 downto 0);
+			cout   : out std_logic;
+			sum    : out std_logic_vector (7 downto 0)
 		);
 	end component;
 
@@ -194,18 +194,7 @@ begin
 	);
 
 	-- Post processing
-	-- Assuming c_0 = 0, thus c(i+1) = G[i:0]
-	c(0) <= '0';
-	init_carry : for I in 0 to 7 generate
-		c(I+1) <= Gi0(I);
-	end generate init_carry;
+	postprocess_block: PostProcess
+		port map(Gi0 => Gi0, p => p, cout => cout, sum => sum);
 	
-	cout <= c(8);
-
-	-- Parallel Sum computation using for...generate statement
-	postprocess : for I in 0 to 7 generate
-		xor_i : XorGate
-		port map(a => p(I), b => c(I), z => sum(I));
-	end generate postprocess;
-
 end architecture;
