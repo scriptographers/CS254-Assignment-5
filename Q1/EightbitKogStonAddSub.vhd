@@ -16,7 +16,8 @@ end entity;
 
 architecture struct of EightbitKogStonAddSub is
 
-	signal g, p, c, Gi0, Pi0 : std_logic_vector (7 downto 0);
+	signal g, p, Gi0, Pi0 : std_logic_vector (7 downto 0);
+	signal c : std_logic_vector (8 downto 0);
 
 	signal G21, P21 : std_logic;
 	signal G32, P32 : std_logic;
@@ -195,13 +196,18 @@ begin
 	);
 
 	-- Post processing
-	-- Assuming c_0 = 0, thus c(i) = G[i:0]
-	cout <= Gi0(7);
+	-- Assuming c_0 = 0, thus c(i+1) = G[i:0]
+	c(0) <= '0';
+	init_carry : for I in 0 to 7 generate
+		c(I+1) <= Gi0(I);
+	end generate init_carry;
+	
+	cout <= c(8);
 
 	-- Parallel Sum computation using for...generate statement
 	postprocess : for I in 0 to 7 generate
 		xor_i : XorGate
-		port map(a => p(I), b => Gi0(I), z => sum(I));
+		port map(a => p(I), b => c(I), z => sum(I));
 	end generate postprocess;
 
 end architecture;
