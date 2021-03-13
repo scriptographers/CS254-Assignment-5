@@ -88,3 +88,8 @@ entity and_gate is
     input  : in std_logic_vector(1 downto 0);
     output : out std_logic);
 end entity;
+
+architecture and_arc of and_gate is
+begin
+  output <= input(0) and input(1);
+end architecture;
