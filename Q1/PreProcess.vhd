@@ -27,7 +27,7 @@ architecture struct of PreProcess is
 			z    : out std_logic
 		);
 	end component;
-	
+
 	component GenAndProp is
 		port (
 			a, b : in std_logic;

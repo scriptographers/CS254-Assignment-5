@@ -29,9 +29,9 @@ begin
 	-- Assuming c_0 = 0, thus c(i+1) = G[i:0]
 	c(0) <= '0';
 	init_carry : for I in 0 to 7 generate
-		c(I+1) <= Gi0(I);
+		c(I + 1) <= Gi0(I);
 	end generate init_carry;
-	
+
 	cout <= c(8);
 
 	-- Parallel Sum computation using for...generate statement
