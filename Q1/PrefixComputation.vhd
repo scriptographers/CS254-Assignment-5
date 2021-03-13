@@ -1,4 +1,4 @@
--- Component: Computes G[i:0] and P[i:0]
+-- Component: Computes G[i:0] and P[i:0] for all i using GPCell
 library work;
 use work.all;
 

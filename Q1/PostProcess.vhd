@@ -1,4 +1,4 @@
--- Component: Computes carry and sum for the post-processing step
+-- Component: Computes carry and sum from prefixes using CarryCell
 library work;
 use work.all;
 

@@ -1,4 +1,4 @@
--- Component: Xor Gate using 2x1 MUXes
+-- Component: XOR Gate using 2x1 MUXes
 library work;
 use work.all;
 

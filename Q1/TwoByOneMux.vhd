@@ -1,4 +1,4 @@
--- MODULE TwoByOneMux - only allowed component of OnebitFullAdd
+-- Component: 2x1 MUX using structural modelling
 library work;
 use work.all;
 

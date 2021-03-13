@@ -24,7 +24,7 @@ architecture struct of Overloading is
 
 begin
 
-  -- Parallel Sum computation using for...generate statement
+  -- Modifying b based on c0 computation using for...generate statement
   modifier_loop : for I in 0 to 7 generate
     xor_i : XorGate
     port map(a => b(I), b => c0, z => b_mod(I));

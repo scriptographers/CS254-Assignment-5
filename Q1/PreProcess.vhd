@@ -1,4 +1,4 @@
--- Component: Computes g(i) and p(i) for the pre-processing step
+-- Component: Computes g(i)=G[i:i] and p(i)=P[i:i] for all i using GenAndProp
 library work;
 use work.all;
 

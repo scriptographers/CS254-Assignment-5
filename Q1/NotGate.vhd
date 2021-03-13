@@ -1,4 +1,4 @@
--- Component: Not Gate using 2x1 MUXes
+-- Component: NOT Gate using 2x1 MUX
 library work;
 use work.all;
 

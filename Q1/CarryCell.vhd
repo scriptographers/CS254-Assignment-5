@@ -1,4 +1,4 @@
--- Component: Computes g and p for the pre-processing step
+-- Component: Computes carry for the post-processing step
 library work;
 use work.all;
 

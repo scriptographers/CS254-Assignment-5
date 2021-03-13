@@ -1,4 +1,4 @@
--- Component: Or Gate using 2x1 MUXes
+-- Component: OR Gate using 2x1 MUX
 library work;
 use work.all;
 
