@@ -16,7 +16,15 @@ end entity;
 
 architecture struct of EightbitKogStonAddSub is
 
-	signal g, p, Gi0, Pi0 : std_logic_vector (7 downto 0);
+	signal b_mod, g, p, Gi0, Pi0 : std_logic_vector (7 downto 0);
+
+	component Overloading is
+		port (
+			c0    : in std_logic;
+			b     : in std_logic_vector (7 downto 0);
+			b_mod : out std_logic_vector (7 downto 0)
+		);
+	end component;
 
 	component PreProcess is
 		port (
@@ -34,17 +42,23 @@ architecture struct of EightbitKogStonAddSub is
 
 	component PostProcess is
 		port (
-			Gi0, p : in std_logic_vector (7 downto 0);
-			cout   : out std_logic;
-			sum    : out std_logic_vector (7 downto 0)
+			cin      : in std_logic;
+			Gi0, Pi0 : in std_logic_vector (7 downto 0);
+			p        : in std_logic_vector (7 downto 0);
+			cout     : out std_logic;
+			sum      : out std_logic_vector (7 downto 0)
 		);
 	end component;
 
 begin
 
+	-- Overloading
+	overloading_block : Overloading
+	port map(c0 => cin, b => b, b_mod => b_mod);
+
 	-- Pre-processing
 	preprocess_block : PreProcess
-	port map(a => a, b => b, g => g, p => p);
+	port map(a => a, b => b_mod, g => g, p => p);
 
 	-- Prefix Computation
 	prefix_block : PrefixComputation
@@ -52,6 +66,6 @@ begin
 
 	-- Post-processing
 	postprocess_block : PostProcess
-	port map(Gi0 => Gi0, p => p, cout => cout, sum => sum);
+	port map(cin => cin, Gi0 => Gi0, Pi0 => Pi0, p => p, cout => cout, sum => sum);
 
 end architecture;
