@@ -31,13 +31,6 @@ architecture struct of EightbitKogStonAddSub is
 	signal G63, P63 : std_logic;
 	signal G74, P74 : std_logic;
 
-	component GenAndProp is
-		port (
-			a, b : in std_logic;
-			g, p : out std_logic
-		);
-	end component;
-
 	component GPCell is
 		port (
 			Gij, Pij     : in std_logic;
@@ -52,14 +45,19 @@ architecture struct of EightbitKogStonAddSub is
 			z    : out std_logic
 		);
 	end component;
+	
+	component PreProcess is
+		port (
+			a, b : in std_logic_vector (7 downto 0);
+			g, p : out std_logic_vector (7 downto 0)
+		);
+	end component;
 
 begin
 
 	-- Parallel Preprocessing using for...generate statement (Reference: https://www.ics.uci.edu/~jmoorkan/vhdlref/generate.html)
-	preprocess : for I in 0 to 7 generate
-		gen_and_prop : GenAndProp
-		port map(a => a(I), b => b(I), g => g(i), p => p(i));
-	end generate preprocess;
+	preprocess_block : PreProcess
+		port map(a => a, b => b, g => g, p => p);
 
 	-- We already have GP00 G00 == g(0) and P00 == p(0)
 	Gi0(0) <= g(0);

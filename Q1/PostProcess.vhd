@@ -1,4 +1,4 @@
--- Component: Computes c_{i+1} and s_i for the post-processing step
+-- Component: Computes carry and sum for the post-processing step
 library work;
 use work.all;
 
