@@ -44,6 +44,13 @@ architecture struct of EightbitKogStonAddSub is
 			Gik, Pik: out std_logic
 		);
 	end component;
+	
+	component XorGate is
+		port (
+			a, b : in std_logic;
+			z    : out std_logic
+		);
+	end component;
 
 begin
 
